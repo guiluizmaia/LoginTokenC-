@@ -31,5 +31,26 @@ namespace Shop.Controllers
                 token = token
             };
         }
+
+        [HttpGet]
+        [Route("login/all")]
+        [Authorize]
+        public async Task<ActionResult<dynamic>> All(){
+            var user = UserRepository.all();
+            if(user == null)
+                return NotFound(new { message = "Sem usuários cadastrados" });
+            
+            return user;
+        }
+        
+        [HttpGet]
+        [Route("login/user")]
+        [Authorize(Roles = "manager")]
+        public async Task<ActionResult<dynamic>> Usuario(){
+            var user = String.Format("Autenticado - {0}", User.Identity.Name);
+           
+            return user;
+        }
+    
     }
 }
